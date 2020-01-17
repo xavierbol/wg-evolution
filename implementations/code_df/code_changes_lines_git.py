@@ -24,7 +24,8 @@ from datetime import datetime
 from implementations.code_df.commit_git import CommitGit
 from implementations.code_df.conditions import (DirExclude,
                                                 MasterInclude,
-                                                PostfixExclude)
+                                                PostfixExclude,
+                                                CommitByTag)
 from implementations.code_df.utils import (str_to_date,
                                            read_json_file)
 
@@ -70,7 +71,8 @@ class CodeChangesLinesGit(CommitGit):
                 'files_no': len(item['data']['files']),
                 'refs': item['data']['refs'],
                 'parents': item['data']['parents'],
-                'files': item['data']['files']
+                'files': item['data']['files'],
+                'message': item['data']['message']
             }
 
             # actions
@@ -191,3 +193,12 @@ if __name__ == "__main__":
     # time-series on a monthly basis considering only master commits
     print("The number of lines modified each month is: ")
     print(changes.time_series())
+
+    # considering commits only that contain either [api] or [backend]
+    # into their message
+    tags = ["[api]", "[backend]"]
+    for tag in tags:
+        print("Code_Changes, only for the commits that contain {} into their message: {}".format(
+            tag,
+            CodeChangesLinesGit(items, conds=[CommitByTag(tag)]).compute()
+        ))

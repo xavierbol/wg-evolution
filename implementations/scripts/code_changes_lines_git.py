@@ -24,7 +24,9 @@ from datetime import datetime
 from implementations.scripts.commit_git import CommitGit
 from implementations.scripts.conditions import (DirExclude,
                                                 MasterInclude,
-                                                PostfixExclude)
+                                                PostfixExclude,
+                                                MergeExclude,
+                                                CommitByTag)
 from implementations.scripts.utils import (read_json_file,
                                            str_to_date)
 
@@ -70,7 +72,8 @@ class CodeChangesLinesGit(CommitGit):
                 'files_no': len(item['data']['files']),
                 'refs': item['data']['refs'],
                 'parents': item['data']['parents'],
-                'files': item['data']['files']
+                'files': item['data']['files'],
+                'message': item['data']['message']
             }
 
             # actions
@@ -142,7 +145,18 @@ if __name__ == "__main__":
                                             ['.md', 'COPYING'])])
     print("Code_Changes_Lines, excluding some files:", changes.compute())
 
+    # total line changes without merged commit
+    changes = CodeChangesLinesGit(items, date_range=(date_since, None),
+                                  conds=[MergeExclude()])
+    print("Code_Changes_Lines, excluding the merged commits:", changes.compute())
+
     # total line changes after a certain date
     changes = CodeChangesLinesGit(items, date_range=(date_since, None),
                                   conds=[MasterInclude()])
     print("Code_Changes_Lines, only for master:", changes.compute())
+
+    tags = ["[api]", "[backend]"]
+    for tag in tags:
+        print("Code_Changes, only for the commits that contain {} into their message: {}".format(
+            tag,
+            CodeChangesLinesGit(items, conds=[CommitByTag(tag)]).compute()))
