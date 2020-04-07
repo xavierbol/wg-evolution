@@ -96,3 +96,5 @@ Mandatory parameters (for Git):
 ## References
 
 * https://www.odoo.com/documentation/13.0/reference/guidelines.html#tag-and-module-name
+* [Guidelines for the message of commits in Angular](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-guidelines)
+* [Guidelines for the message of commits in Aurelia](https://docs.aurelia.io/community-contribution/contributor-guide#git-commit-guidelines)
