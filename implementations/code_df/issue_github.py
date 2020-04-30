@@ -77,9 +77,11 @@ class IssueGitHub(Metric):
             'category': "issue",
             'author': item['data']['user']['login'],
             'created_date': creation_date,
-            'current_status': item['data']['state'],
-            'events_data': item['data']['events_data']
+            'current_status': item['data']['state']
         }
+
+        if 'events_data' in item['data']:
+            flat['events_data'] = item['data']['events_data']
 
         return [flat]
 

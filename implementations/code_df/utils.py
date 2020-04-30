@@ -23,6 +23,10 @@ import datetime
 import json
 
 
+DEFAULT_DATETIME = datetime.datetime.strptime("1970-01-01", "%Y-%m-%d")
+DEFAULT_LAST_DATETIME = datetime.datetime.strptime("2100-01-01", "%Y-%m-%d")
+
+
 def str_to_date(date):
     """
     Converts date, of type string, to a datetime object
